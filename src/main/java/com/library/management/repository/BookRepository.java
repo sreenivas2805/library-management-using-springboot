@@ -1,0 +1,31 @@
+package com.library.management.repository;
+
+import com.library.management.entity.Book;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface BookRepository extends JpaRepository<Book, Long> {
+
+    Optional<Book> findByIsbn(String isbn);
+
+    boolean existsByIsbn(String isbn);
+
+    List<Book> findByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCaseOrCategoryContainingIgnoreCaseOrIsbnContainingIgnoreCase(
+            String title, String author, String category, String isbn
+    );
+
+    @Query("SELECT COUNT(b) FROM Book b WHERE b.availableQuantity > 0")
+    long countAvailableBooks();
+
+    @Query("SELECT SUM(b.quantity) FROM Book b")
+    Long sumTotalQuantity();
+
+    @Query("SELECT SUM(b.availableQuantity) FROM Book b")
+    Long sumAvailableQuantity();
+}

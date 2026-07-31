@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Student - Library Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div id="main-wrapper">
+        <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+        <div class="content-area">
+
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a th:href="@{/dashboard}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/students}">Students Registry</a></li>
+                    <li class="breadcrumb-item active">Edit Student</li>
+                </ol>
+            </nav>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="form-card">
+                        <div class="d-flex align-items-center gap-3 mb-4 pb-3 border-bottom">
+                            <div class="bg-secondary text-white rounded-3 p-3">
+                                <i class="bi bi-pencil-square fs-3"></i>
+                            </div>
+                            <div>
+                                <h4 class="fw-bold mb-0">Edit Student Record</h4>
+                                <small class="text-muted">Update student profile details</small>
+                            </div>
+                        </div>
+
+                        <div th:if="${errorMessage}" class="alert alert-danger">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            <span th:text="${errorMessage}"></span>
+                        </div>
+
+                        <form th:action="@{/students/edit/{id}(id=${studentDto.id})}" th:object="${studentDto}" method="post">
+                            <input type="hidden" th:field="*{id}">
+
+                            <div class="row g-3">
+
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label">Full Name <span class="text-danger">*</span></label>
+                                    <input type="text" id="name" th:field="*{name}" class="form-control" th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="rollNumber" class="form-label">Roll Number / Student ID <span class="text-danger">*</span></label>
+                                    <input type="text" id="rollNumber" th:field="*{rollNumber}" class="form-control" th:classappend="${#fields.hasErrors('rollNumber')} ? 'is-invalid' : ''">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('rollNumber')}" th:errors="*{rollNumber}">Roll number error</div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="department" class="form-label">Department <span class="text-danger">*</span></label>
+                                    <select id="department" th:field="*{department}" class="form-select" th:classappend="${#fields.hasErrors('department')} ? 'is-invalid' : ''">
+                                        <option value="Computer Science">Computer Science</option>
+                                        <option value="Electrical Engineering">Electrical Engineering</option>
+                                        <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                        <option value="Civil Engineering">Civil Engineering</option>
+                                        <option value="Business Administration">Business Administration</option>
+                                        <option value="Information Technology">Information Technology</option>
+                                    </select>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('department')}" th:errors="*{department}">Department error</div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="year" class="form-label">Academic Year / Level <span class="text-danger">*</span></label>
+                                    <select id="year" th:field="*{year}" class="form-select" th:classappend="${#fields.hasErrors('year')} ? 'is-invalid' : ''">
+                                        <option value="1st Year">1st Year</option>
+                                        <option value="2nd Year">2nd Year</option>
+                                        <option value="3rd Year">3rd Year</option>
+                                        <option value="4th Year">4th Year</option>
+                                        <option value="Postgraduate">Postgraduate</option>
+                                    </select>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('year')}" th:errors="*{year}">Year error</div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
+                                    <input type="email" id="email" th:field="*{email}" class="form-control" th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="phone" class="form-label">Phone Number <span class="text-danger">*</span></label>
+                                    <input type="text" id="phone" th:field="*{phone}" class="form-control" th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid' : ''">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Phone error</div>
+                                </div>
+
+                            </div>
+
+                            <div class="mt-4 pt-3 border-top d-flex gap-2 justify-content-end">
+                                <a th:href="@{/students}" class="btn btn-light border px-4">Cancel</a>
+                                <button type="submit" class="btn btn-primary px-4">
+                                    <i class="bi bi-check-lg me-1"></i> Update Student
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

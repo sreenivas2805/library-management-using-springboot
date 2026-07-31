@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students Registry - Library Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div id="main-wrapper">
+        <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+        <div class="content-area">
+
+            <!-- Alerts -->
+            <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <span th:text="${successMessage}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <span th:text="${errorMessage}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <!-- Page Header -->
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+                <div>
+                    <h3 class="fw-bold mb-1">Students Registry</h3>
+                    <p class="text-muted mb-0">Manage registered student library profiles</p>
+                </div>
+                <a th:href="@{/students/add}" class="btn btn-primary">
+                    <i class="bi bi-person-plus me-1"></i> Register Student
+                </a>
+            </div>
+
+            <!-- Search Filter Bar -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <form th:action="@{/students}" method="get" class="row g-3 align-items-center">
+                        <div class="col-md-9">
+                            <div class="search-box w-100 max-w-none">
+                                <i class="bi bi-search"></i>
+                                <input type="text" name="query" th:value="${query}" class="form-control form-control-lg" placeholder="Search by Student Name, Roll Number, or Department...">
+                            </div>
+                        </div>
+                        <div class="col-md-3 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary w-100 py-2">
+                                <i class="bi bi-funnel me-1"></i> Search
+                            </button>
+                            <a th:href="@{/students}" class="btn btn-light border py-2">Reset</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Students Table -->
+            <div class="custom-table-container">
+                <div class="table-responsive">
+                    <table class="table align-middle filterable-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Student Name</th>
+                                <th>Roll Number</th>
+                                <th>Department</th>
+                                <th>Year</th>
+                                <th>Email Address</th>
+                                <th>Phone</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="student, iter : ${students}">
+                                <td th:text="${iter.count}">1</td>
+                                <td>
+                                    <div class="fw-bold text-dark" th:text="${student.name}">Name</div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-dark font-monospace border" th:text="${student.rollNumber}">Roll No</span>
+                                </td>
+                                <td th:text="${student.department}">Department</td>
+                                <td th:text="${student.year}">Year</td>
+                                <td>
+                                    <a th:href="'mailto:' + ${student.email}" class="text-decoration-none text-primary" th:text="${student.email}">Email</a>
+                                </td>
+                                <td th:text="${student.phone}">Phone</td>
+                                <td class="text-end">
+                                    <div class="btn-group btn-group-sm">
+                                        <a th:href="@{/students/edit/{id}(id=${student.id})}" class="btn btn-outline-secondary" title="Edit Student">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form th:action="@{/students/delete/{id}(id=${student.id})}" method="post" style="display:inline;">
+                                            <button type="submit" class="btn btn-outline-danger confirm-delete" th:attr="data-item-name=${student.name}" title="Delete Student">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(students)}">
+                                <td colspan="8" class="text-center py-5 text-muted">
+                                    <i class="bi bi-people fs-1 d-block mb-2 text-secondary"></i>
+                                    <h5>No students found</h5>
+                                    <p class="small text-muted mb-0">Try adjusting your search criteria or register a new student.</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

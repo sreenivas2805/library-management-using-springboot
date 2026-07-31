@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <a href="/" class="sidebar-brand">
+            <i class="bi bi-book-half fs-3 text-primary"></i>
+            <span>LibraryOS</span>
+        </a>
+    </div>
+
+    <ul class="sidebar-menu">
+        <li class="nav-item">
+            <a th:href="@{/dashboard}" class="nav-link" th:classappend="${activePage == 'dashboard'} ? 'active' : ''">
+                <i class="bi bi-grid-1x2-fill"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a th:href="@{/books}" class="nav-link" th:classappend="${activePage == 'books'} ? 'active' : ''">
+                <i class="bi bi-journal-bookmark-fill"></i>
+                <span>Books Catalog</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a th:href="@{/students}" class="nav-link" th:classappend="${activePage == 'students'} ? 'active' : ''">
+                <i class="bi bi-people-fill"></i>
+                <span>Students Registry</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a th:href="@{/issue}" class="nav-link" th:classappend="${activePage == 'issue'} ? 'active' : ''">
+                <i class="bi bi-box-arrow-up-right"></i>
+                <span>Issue Book</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a th:href="@{/return}" class="nav-link" th:classappend="${activePage == 'return'} ? 'active' : ''">
+                <i class="bi bi-box-arrow-in-down-left"></i>
+                <span>Return Book</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a th:href="@{/issued-books}" class="nav-link" th:classappend="${activePage == 'issued-books'} ? 'active' : ''">
+                <i class="bi bi-clock-history"></i>
+                <span>Issued Books History</span>
+            </a>
+        </li>
+    </ul>
+
+    <div class="p-3 border-top border-secondary">
+        <div class="d-flex align-items-center gap-2 text-muted small">
+            <i class="bi bi-shield-check text-success"></i>
+            <span>Spring Boot 3.2 + JPA</span>
+        </div>
+    </div>
+</div>
+</body>
+</html>
